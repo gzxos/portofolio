@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+<title>Ghifari Zaki — Data Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+/* ─── TOKENS ─── */
+:root {
+  --black:        #0a0a0a;
+  --dark:         #1a1a1a;
+  --dark-2:       #2a2a2a;
+  --grey:         #6b6b6b;
+  --grey-light:   #e8e8e8;
+  --bg:           #f5f5f5;
+  --white:        #ffffff;
+  --border:       #e0e0e0;
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body:    'Inter', sans-serif;
+  --nav-h:        68px;
+  --max-w:        1100px;
+  --sec-pad:      6rem;
+  --r-sm:         6px;
+  --r-md:         12px;
+  --r-lg:         20px;
+  --shadow-sm:    0 1px 4px rgba(0,0,0,.08);
+  --shadow-md:    0 4px 20px rgba(0,0,0,.10);
+  --t:            0.25s ease;
+}
+
+/* ─── RESET ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--dark);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; transition: color var(--t); }
+ul { list-style: none; }
+
+/* ─── UTILITIES ─── */
+.container { width: min(var(--max-w), 100% - 4rem); margin-inline: auto; }
+.section-eyebrow {
+  font-size: .75rem; font-weight: 600; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--grey); margin-bottom: .5rem;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 400; color: var(--black);
+  line-height: 1.2; margin-bottom: 3rem;
+}
+
+/* ─── BUTTONS ─── */
+.btn {
+  display: inline-block; padding: .75rem 1.75rem;
+  border-radius: var(--r-sm); font-family: var(--font-body);
+  font-size: .875rem; font-weight: 600; letter-spacing: .02em;
+  cursor: pointer; border: 1.5px solid transparent;
+  transition: all var(--t);
+}
+.btn:hover { transform: translateY(-1px); }
+.btn-dark { background: var(--black); color: var(--white); border-color: var(--black); }
+.btn-dark:hover { background: var(--dark-2); border-color: var(--dark-2); }
+.btn-outline { background: transparent; color: var(--black); border-color: var(--black); }
+.btn-outline:hover { background: var(--black); color: var(--white); }
+.btn-sm {
+  padding: .5rem 1.2rem; font-size: .8rem;
+  background: var(--white); color: var(--dark); border-color: var(--border);
+}
+.btn-sm:hover { background: var(--black); color: var(--white); border-color: var(--black); }
+.btn-sm.btn-outline { background: transparent; }
+.btn-sm.btn-outline:hover { background: var(--black); color: var(--white); }
+
+/* ─── NAVBAR ─── */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  display: flex; align-items: center; justify-content: space-between;
+  padding-inline: 2.5rem;
+  z-index: 1101;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid transparent;
+  transition: background var(--t), border-color var(--t);
+}
+.navbar.scrolled { border-bottom-color: var(--border); background: rgba(245,245,245,.97); }
+.navbar.menu-open {
+  background: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-bottom-color: var(--border);
+}
+
+.nav-logo { font-family: var(--font-display); font-size: 1.3rem; color: var(--black); letter-spacing: -.01em; }
+.nav-links { display: flex; gap: 2.5rem; align-items: center; }
+.nav-links a { font-size: .85rem; font-weight: 500; letter-spacing: .02em; color: var(--grey); transition: color var(--t); }
+.nav-links a:hover { color: var(--black); }
+
+/* Hamburger button */
+.nav-toggle {
+  display: none;
+  flex-direction: column; justify-content: center; gap: 5px;
+  background: none; border: none; cursor: pointer;
+  padding: 8px; z-index: 1200;
+  width: 40px; height: 40px;
+  position: relative;
+}
+.nav-toggle span {
+  display: block; width: 22px; height: 1.5px;
+  background: var(--black); border-radius: 2px;
+  transition: transform .35s ease, opacity .25s ease, background .25s ease;
+  transform-origin: center;
+}
+/* X stays black (white overlay) */
+.nav-toggle.active span { background: var(--black); }
+.nav-toggle.active span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.nav-toggle.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-toggle.active span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* ── Full-page mobile overlay ── */
+.mobile-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  background: #ffffff !important;
+  opacity: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  transform: translateX(100%);
+  transition: transform .45s cubic-bezier(.76,0,.24,1);
+  pointer-events: none;
+  /* guarantee solid — no see-through */
+  isolation: isolate;
+}
+.mobile-overlay.visible { display: flex; }
+.mobile-overlay.open    { transform: translateX(0); pointer-events: all; }
+
+/* × close button inside overlay */
+.overlay-close {
+  position: absolute;
+  top: 1.1rem; right: 1.4rem;
+  background: none; border: none; cursor: pointer;
+  font-size: 1.5rem;
+  color: var(--black);
+  line-height: 1;
+  padding: 4px 8px;
+  z-index: 10;
+}
+
+.mobile-overlay .overlay-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+}
+.mobile-overlay .overlay-links a {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--dark);
+  padding: 1.15rem 2rem;
+  width: 100%;
+  text-align: center;
+  transition: color .2s ease;
+}
+.mobile-overlay .overlay-links a:hover { color: var(--black); }
+
+.overlay-contact {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .6rem;
+}
+.overlay-contact a {
+  font-size: .75rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--grey);
+  transition: color .2s;
+}
+.overlay-contact a:hover { color: var(--black); }
+
+/* ─── HERO ─── */
+#hero {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center; gap: 5rem;
+  padding: calc(var(--nav-h) + 4rem) 2.5rem 4rem;
+  max-width: var(--max-w);
+  margin-inline: auto;
+}
+.hero-content { flex: 1; max-width: 560px; }
+.hero-eyebrow { font-size: .85rem; font-weight: 500; letter-spacing: .04em; color: var(--grey); margin-bottom: .5rem; }
+.hero-name {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 6vw, 4.5rem);
+  font-weight: 400; letter-spacing: -.02em; line-height: 1.05;
+  color: var(--black); margin-bottom: .5rem;
+}
+.hero-role { font-size: 1rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--grey); margin-bottom: 1.5rem; }
+.hero-desc { font-size: 1rem; line-height: 1.75; color: var(--grey); max-width: 460px; margin-bottom: 2rem; }
+.hero-btns { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; }
+.hero-socials a {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; font-size: 1.1rem; color: var(--dark);
+  border: 1.5px solid var(--border); border-radius: 50%;
+  transition: all var(--t);
+}
+.hero-socials a:hover { background: var(--black); color: var(--white); border-color: var(--black); }
+.hero-img { flex-shrink: 0; }
+.hero-img img {
+  width: 320px; height: 320px; object-fit: cover;
+  border-radius: 50%; border: 3px solid var(--border); filter: grayscale(20%);
+}
+
+/* ─── ABOUT ─── */
+#about { padding-block: var(--sec-pad); background: var(--white); border-top: 1px solid var(--border); }
+.about-grid { display: grid; grid-template-columns: 1fr 1.5fr; align-items: start; gap: 4rem; }
+.about-cards { display: flex; flex-direction: column; gap: 1rem; }
+.about-card {
+  padding: 1.5rem; background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--r-md); text-align: center;
+  transition: box-shadow var(--t), transform var(--t);
+}
+.about-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.about-card i { font-size: 1.5rem; color: var(--dark-2); margin-bottom: .75rem; }
+.about-card h3 { font-size: .95rem; font-weight: 600; color: var(--black); margin-bottom: .4rem; }
+.about-card p { font-size: .85rem; line-height: 1.5; color: var(--grey); }
+.about-text p { font-size: .95rem; line-height: 1.8; color: var(--grey); margin-bottom: 1rem; }
+
+/* ─── SKILLS ─── */
+#skills { padding-block: var(--sec-pad); background: var(--bg); border-top: 1px solid var(--border); }
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.skills-card {
+  padding: 2rem; background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--r-md); transition: box-shadow var(--t);
+}
+.skills-card:hover { box-shadow: var(--shadow-md); }
+.skills-card h3 {
+  font-size: .85rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--black); padding-bottom: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border);
+}
+.skill-list { display: flex; flex-direction: column; gap: .75rem; }
+.skill-item { display: flex; align-items: center; gap: .75rem; }
+.skill-item i { flex-shrink: 0; font-size: .65rem; color: var(--dark-2); }
+.skill-item span { flex: 1; font-size: .88rem; font-weight: 500; color: var(--dark); }
+.skill-item small {
+  font-size: .72rem; color: var(--grey); background: var(--bg);
+  border: 1px solid var(--border); border-radius: 100px; padding: 2px 8px; white-space: nowrap;
+}
+
+/* ─── PROJECTS ─── */
+#projects { padding-block: var(--sec-pad); background: var(--white); border-top: 1px solid var(--border); }
+.projects-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+.project-card {
+  display: flex; flex-direction: column; gap: 1rem;
+  padding: 2rem; background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--r-md); transition: box-shadow var(--t), transform var(--t);
+}
+.project-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.project-tag {
+  width: fit-content; font-size: .72rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--grey);
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 100px; padding: 3px 10px;
+}
+.project-card h3 { font-family: var(--font-display); font-size: 1.25rem; font-weight: 400; line-height: 1.3; color: var(--black); }
+.project-card p { flex: 1; font-size: .875rem; line-height: 1.75; color: var(--grey); }
+.project-stack { display: flex; flex-wrap: wrap; gap: .4rem; }
+.project-stack span {
+  font-size: .72rem; font-weight: 600; color: var(--dark);
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--r-sm); padding: 3px 10px;
+}
+.project-btns { display: flex; flex-wrap: wrap; gap: .75rem; }
+
+/* ─── CONTACT ─── */
+#contact { padding-block: var(--sec-pad); background: var(--bg); border-top: 1px solid var(--border); }
+.contact-box { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+.contact-item {
+  display: flex; align-items: center; gap: .75rem;
+  padding: 1.25rem 1.75rem;
+  background: var(--white); border: 1px solid var(--border); border-radius: var(--r-md);
+  transition: box-shadow var(--t);
+}
+.contact-item:hover { box-shadow: var(--shadow-md); }
+.contact-item i { font-size: 1.2rem; color: var(--dark); }
+.contact-item a { font-size: .9rem; font-weight: 500; color: var(--dark); }
+.contact-item a:hover { color: var(--black); }
+
+/* ─── FOOTER ─── */
+footer { padding: 2.5rem; text-align: center; background: var(--black); border-top: 1px solid #222; }
+.footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem; margin-bottom: 1.25rem; }
+.footer-links a { font-size: .8rem; font-weight: 500; color: var(--grey); transition: color var(--t); }
+.footer-links a:hover { color: var(--white); }
+footer p { font-size: .78rem; color: #555; }
+
+/* ═══════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════ */
+/* ── 1024px: tablet landscape ── */
+@media (max-width: 1024px) {
+  #hero { gap: 3rem; }
+  .hero-img img { width: 260px; height: 260px; }
+
+  /* Skills: 2 col, card ketiga center */
+  .skills-grid { grid-template-columns: repeat(2, 1fr); }
+  .skills-card:last-child {
+    grid-column: 1 / -1;
+    max-width: calc(50% - .75rem);
+    margin-inline: auto;
+  }
+
+  /* Projects: 2 col */
+  .projects-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── 900px: tablet portrait ── */
+@media (max-width: 900px) {
+  .nav-toggle { display: flex; }
+  .nav-links  { display: none; }
+
+  /* Hero */
+  #hero {
+    flex-direction: column-reverse;
+    text-align: center;
+    padding-top: calc(var(--nav-h) + 3rem);
+    gap: 2rem;
+  }
+  .hero-content { max-width: 100%; }
+  .hero-desc    { margin-inline: auto; }
+  .hero-btns    { justify-content: center; }
+  .hero-socials { display: flex; justify-content: center; }
+  .hero-img img { width: 200px; height: 200px; }
+
+  /* About: single col, cards side by side */
+  .about-grid  { grid-template-columns: 1fr; gap: 2rem; }
+  .about-cards { flex-direction: row; }
+  .about-card  { flex: 1; }
+
+  /* Skills: 2 col, card ketiga center */
+  .skills-grid { grid-template-columns: repeat(2, 1fr); }
+  .skills-card:last-child {
+    grid-column: 1 / -1;
+    max-width: calc(50% - .75rem);
+    margin-inline: auto;
+  }
+
+  /* Projects: 2 col */
+  .projects-grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* Contact */
+  .contact-box { flex-direction: column; }
+  .contact-item { width: 100%; }
+}
+
+/* ── 768px: large mobile ── */
+@media (max-width: 768px) {
+  #about, #skills, #projects, #contact { padding-block: 4rem; }
+
+  /* About cards stack vertically */
+  .about-cards { flex-direction: column; }
+  .about-card  { flex: unset; }
+
+  /* Skills: semua 1 col penuh */
+  .skills-grid { grid-template-columns: 1fr; }
+  .skills-card:last-child {
+    grid-column: unset;
+    max-width: 100%;
+    margin-inline: 0;
+  }
+
+  /* Projects: 1 col */
+  .projects-grid { grid-template-columns: 1fr; }
+}
+
+/* ── 600px: mobile portrait ── */
+@media (max-width: 600px) {
+  .navbar    { padding-inline: 1rem; }
+  #hero      { padding-inline: 1rem; }
+  .hero-name { font-size: 2.2rem; }
+
+  /* About */
+  .about-grid { gap: 1.5rem; }
+
+  /* Skills */
+  .skills-grid  { grid-template-columns: 1fr; }
+  .skills-card  { padding: 1.25rem; }
+  .skill-item        { flex-wrap: wrap; gap: .4rem; }
+  .skill-item span   { min-width: 0; }
+  .skill-item small  { margin-left: auto; }
+
+  /* Projects */
+  .projects-grid { grid-template-columns: 1fr; }
+  .project-card  { padding: 1.25rem; }
+  .project-stack span { font-size: .68rem; }
+
+  /* Contact */
+  .contact-box  { flex-direction: column; }
+  .contact-item { width: 100%; padding: 1rem 1.25rem; }
+
+  /* Footer */
+  .footer-links { gap: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-logo">Ghifari Zaki</div>
+  <ul class="nav-links" id="nav-links-desktop">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- FULL-PAGE MOBILE OVERLAY -->
+<div class="mobile-overlay" id="mobile-overlay">
+  <button class="overlay-close" id="overlay-close" aria-label="Close menu">&#x2715;</button>
+  <nav class="overlay-links">
+    <a href="#about"    class="overlay-link">About</a>
+    <a href="#skills"   class="overlay-link">Skills</a>
+    <a href="#projects" class="overlay-link">Projects</a>
+    <a href="#contact"  class="overlay-link">Contact</a>
+  </nav>
+  <div class="overlay-contact">
+    <a href="mailto:ghifarizaki.ws@gmail.com"><i class="fas fa-envelope" style="margin-right:.5rem"></i>ghifarizaki000@gmail.com</a>
+    <a href="https://github.com/ghifarizk" target="_blank"><i class="fab fa-github" style="margin-right:.5rem"></i>github.com/ghifarizk</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-content">
+    <p class="hero-eyebrow">Hello, I'm</p>
+    <h1 class="hero-name">Ghifari Zaki</h1>
+    <p class="hero-role">Data Analyst</p>
+    <p class="hero-desc">Computer Science graduate passionate about turning raw data into actionable insights. Experienced in Python, Power BI, and machine learning.</p>
+    <div class="hero-btns">
+      <button class="btn btn-dark" onclick="window.open('./assets/cv.pdf')">Download CV</button>
+      <button class="btn btn-outline" onclick="location.href='#contact'">Contact Me</button>
+    </div>
+    <div class="hero-socials">
+      <a href="https://github.com/ghifarizk" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+    </div>
+  </div>
+  <div class="hero-img">
+    <img src="./assets/profile.png" alt="Ghifari Zaki" />
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <p class="section-eyebrow">Get To Know More</p>
+    <h2 class="section-title">About Me</h2>
+    <div class="about-grid">
+      <div class="about-cards">
+        <div class="about-card">
+          <i class="fas fa-briefcase"></i>
+          <h3>Experience</h3>
+          <p>QA Intern &amp; Freelance Web Developer</p>
+        </div>
+        <div class="about-card">
+          <i class="fas fa-graduation-cap"></i>
+          <h3>Education</h3>
+          <p>B.Sc. Computer Science<br>Muhammadiyah University of Surakarta</p>
+        </div>
+      </div>
+      <div class="about-text">
+        <p>Computer Science graduate with experience in software development and a growing focus on data analysis and machine learning. Experienced in analyzing system workflows, validating data accuracy, and translating business requirements into data-driven solutions.</p>
+        <p>Passionate about leveraging data to generate actionable insights and support decision-making through structured analysis.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <p class="section-eyebrow">What I Work With</p>
+    <h2 class="section-title">Technical Skills</h2>
+    <div class="skills-grid">
+      <div class="skills-card">
+        <h3>Languages &amp; Libraries</h3>
+        <div class="skill-list">
+          <div class="skill-item"><i class="fas fa-check"></i><span>Python</span><small>Experienced</small></div>
+          <div class="skill-item"><i class="fas fa-check"></i><span>Pandas</span><small>Experienced</small></div>
+          <div class="skill-item"><i class="fas fa-check"></i><span>NumPy</span><small>Experienced</small></div>
+          <div class="skill-item"><i class="fas fa-check"></i><span>Scikit-learn</span><small>Intermediate</small></div>
+          <div class="skill-item"><i class="fas fa-check"></i><span>SQL</span><small>Basic</small></div>
+        </div>
+      </div>
+      <div class="skills-card">
+        <h3>Analysis &amp; Visualization</h3>
+        <div class="skill-list">
+          <div class="skill-item"><i class="fas fa-check"></i><span>Exploratory Data Analysis</span><small>Experienced</small></div>
+          <div class="skill-item"><i class="fas fa-check"></i><span>Matplotlib &amp; Seaborn</span><small>Experienced</small></div>
+          <div class="skill-item"><i class="fas fa-check"></i><span>Power BI</span><small>Intermediate</small></div>
+          <div class="skill-item"><i class="fas fa-check"></i><span>Feature Selection</span><small>Intermediate</small></div>
+          <div class="skill-item"><i class="fas fa-check"></i><span>Tableau</span><small>Basic</small></div>
+        </div>
+      </div>
+      <div class="skills-card">
+        <h3>Tools &amp; Other</h3>
+        <div class="skill-list">
+          <div class="skill-item"><i class="fas fa-check"></i><span>Jupyter Notebook</span><small>Experienced</small></div>
+          <div class="skill-item"><i class="fas fa-check"></i><span>Git &amp; GitHub</span><small>Intermediate</small></div>
+          <div class="skill-item"><i class="fas fa-check"></i><span>Flask</span><small>Basic</small></div>
+          <div class="skill-item"><i class="fas fa-check"></i><span>Microsoft Excel</span><small>Intermediate</small></div>
+          <div class="skill-item"><i class="fas fa-check"></i><span>Business Process Analysis</span><small>Intermediate</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <p class="section-eyebrow">Browse My Recent</p>
+    <h2 class="section-title">Projects</h2>
+    <div class="projects-grid">
+      <div class="project-card">
+        <div class="project-tag">Machine Learning · Thesis</div>
+        <h3>Diabetes Risk Prediction Model</h3>
+        <p>Built a machine learning model to predict early-stage diabetes risk using 48K+ health records (CDC dataset). Handled class imbalance using SMOTE and evaluated models including Logistic Regression, Random Forest, and XGBoost. Achieved 75% recall and 83% ROC-AUC. Deployed into a Flask-based web app for real-time prediction.</p>
+        <div class="project-stack">
+          <span>Python</span><span>Scikit-learn</span><span>SMOTE</span><span>Flask</span>
+        </div>
+        <div class="project-btns">
+          <a href="https://github.com/gzxos/diabetes-prediction-ml" target="_blank" class="btn btn-sm">GitHub</a>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-tag">Data Analysis · Power BI</div>
+        <h3>Amazon India Sales Dashboard</h3>
+        <p>Analyzed 128K+ Amazon India sales transactions using Python for EDA and Power BI for an interactive dashboard. Performed data cleaning including null handling, column selection, and datetime conversion. Identified key insights: Set as top revenue category, April as peak month, and Maharashtra as leading state.</p>
+        <div class="project-stack">
+          <span>Python</span><span>Pandas</span><span>Seaborn</span><span>Power BI</span>
+        </div>
+        <div class="project-btns">
+          <a href="https://github.com/gzxos/amazon-sales-eda" target="_blank" class="btn btn-sm">GitHub</a>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-tag">Web Development · Freelance</div>
+        <h3>Company Profile Website</h3>
+        <p>Developed a responsive company profile website for Villa Syariah Pikasa. Translated client requirements into a functional web solution with modern design, gallery lightbox, contact form with EmailJS integration, and Google Maps embed.</p>
+        <div class="project-stack">
+          <span>HTML</span><span>CSS</span><span>JavaScript</span><span>EmailJS</span>
+        </div>
+        <div class="project-btns">
+          <a href="https://github.com/gzxos/villa-pikasa-site" target="_blank" class="btn btn-sm">GitHub</a>
+          <a href="https://gzxos.github.io/villa-pikasa-site/" target="_blank" class="btn btn-sm btn-outline">Live Demo</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <p class="section-eyebrow">Get in Touch</p>
+    <h2 class="section-title">Contact Me</h2>
+    <div class="contact-box">
+      <div class="contact-item">
+        <i class="fas fa-envelope"></i>
+        <a href="mailto:ghifarizaki.ws@gmail.com">ghifarizaki.ws@gmail.com</a>
+      </div>
+      <div class="contact-item">
+        <i class="fab fa-github"></i>
+        <a href="https://github.com/gzxos" target="_blank">github.com/gzxos</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-links">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <p>© 2025 Ghifari Zaki. All Rights Reserved.</p>
+</footer>
+
+<script>
+  /* ── Navbar scroll tint ── */
+  const navbar  = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  /* ── Hamburger / overlay logic ── */
+  const toggle  = document.getElementById('nav-toggle');
+  const overlay = document.getElementById('mobile-overlay');
+  const closBtn = document.getElementById('overlay-close');
+  let   isOpen  = false;
+
+  function openMenu() {
+    isOpen = true;
+    overlay.classList.add('visible');
+    overlay.getBoundingClientRect();
+    overlay.classList.add('open');
+    toggle.classList.add('active');
+    navbar.classList.add('menu-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    isOpen = false;
+    overlay.classList.remove('open');
+    toggle.classList.remove('active');
+    navbar.classList.remove('menu-open');
+    document.body.style.overflow = '';
+    overlay.addEventListener('transitionend', () => {
+      if (!isOpen) overlay.classList.remove('visible');
+    }, { once: true });
+  }
+
+  toggle.addEventListener('click', () => { isOpen ? closeMenu() : openMenu(); });
+  closBtn.addEventListener('click', closeMenu);
+
+  /* Close on link tap */
+  overlay.querySelectorAll('.overlay-link').forEach(link => {
+    link.addEventListener('click', () => {
+      closeMenu();
+    });
+  });
+
+  /* ── Smooth scroll (offset for fixed nav) ── */
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (!target) return;
+      window.scrollTo({ top: target.offsetTop - navbar.offsetHeight, behavior: 'smooth' });
+    });
+  });
+
+  /* ── Prevent ctrl+scroll zoom ── */
+  window.addEventListener('wheel', e => { if (e.ctrlKey) e.preventDefault(); }, { passive: false });
+  window.addEventListener('keydown', e => { if (e.ctrlKey && ['+','-','=','0'].includes(e.key)) e.preventDefault(); });
+</script>
+</body>
+</html>
