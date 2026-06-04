@@ -9,7 +9,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-/* ─── TOKENS ─── */
 :root {
   --black:        #0a0a0a;
   --dark:         #1a1a1a;
@@ -31,8 +30,6 @@
   --shadow-md:    0 4px 20px rgba(0,0,0,.10);
   --t:            0.25s ease;
 }
-
-/* ─── RESET ─── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; font-size: 16px; }
 body {
@@ -46,8 +43,6 @@ body {
 img { display: block; max-width: 100%; }
 a { text-decoration: none; color: inherit; transition: color var(--t); }
 ul { list-style: none; }
-
-/* ─── UTILITIES ─── */
 .container { width: min(var(--max-w), 100% - 4rem); margin-inline: auto; }
 .section-eyebrow {
   font-size: .75rem; font-weight: 600; letter-spacing: .18em;
@@ -59,8 +54,6 @@ ul { list-style: none; }
   font-weight: 400; color: var(--black);
   line-height: 1.2; margin-bottom: 3rem;
 }
-
-/* ─── BUTTONS ─── */
 .btn {
   display: inline-block; padding: .75rem 1.75rem;
   border-radius: var(--r-sm); font-family: var(--font-body);
@@ -80,8 +73,6 @@ ul { list-style: none; }
 .btn-sm:hover { background: var(--black); color: var(--white); border-color: var(--black); }
 .btn-sm.btn-outline { background: transparent; }
 .btn-sm.btn-outline:hover { background: var(--black); color: var(--white); }
-
-/* ─── NAVBAR ─── */
 .navbar {
   position: fixed; top: 0; left: 0; right: 0;
   height: var(--nav-h);
@@ -100,13 +91,10 @@ ul { list-style: none; }
   -webkit-backdrop-filter: none !important;
   border-bottom-color: var(--border);
 }
-
 .nav-logo { font-family: var(--font-display); font-size: 1.3rem; color: var(--black); letter-spacing: -.01em; }
 .nav-links { display: flex; gap: 2.5rem; align-items: center; }
 .nav-links a { font-size: .85rem; font-weight: 500; letter-spacing: .02em; color: var(--grey); transition: color var(--t); }
 .nav-links a:hover { color: var(--black); }
-
-/* Hamburger button */
 .nav-toggle {
   display: none;
   flex-direction: column; justify-content: center; gap: 5px;
@@ -121,13 +109,10 @@ ul { list-style: none; }
   transition: transform .35s ease, opacity .25s ease, background .25s ease;
   transform-origin: center;
 }
-/* X stays black (white overlay) */
 .nav-toggle.active span { background: var(--black); }
 .nav-toggle.active span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
 .nav-toggle.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
 .nav-toggle.active span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-
-/* ── Full-page mobile overlay ── */
 .mobile-overlay {
   display: none;
   position: fixed;
@@ -142,13 +127,10 @@ ul { list-style: none; }
   transform: translateX(100%);
   transition: transform .45s cubic-bezier(.76,0,.24,1);
   pointer-events: none;
-  /* guarantee solid — no see-through */
   isolation: isolate;
 }
 .mobile-overlay.visible { display: flex; }
 .mobile-overlay.open    { transform: translateX(0); pointer-events: all; }
-
-/* × close button inside overlay */
 .overlay-close {
   position: absolute;
   top: 1.1rem; right: 1.4rem;
@@ -159,7 +141,6 @@ ul { list-style: none; }
   padding: 4px 8px;
   z-index: 10;
 }
-
 .mobile-overlay .overlay-links {
   display: flex;
   flex-direction: column;
@@ -180,7 +161,6 @@ ul { list-style: none; }
   transition: color .2s ease;
 }
 .mobile-overlay .overlay-links a:hover { color: var(--black); }
-
 .overlay-contact {
   margin-top: 2.5rem;
   display: flex;
@@ -196,8 +176,6 @@ ul { list-style: none; }
   transition: color .2s;
 }
 .overlay-contact a:hover { color: var(--black); }
-
-/* ─── HERO ─── */
 #hero {
   min-height: 100vh;
   display: flex; align-items: center; justify-content: center; gap: 5rem;
@@ -228,8 +206,6 @@ ul { list-style: none; }
   width: 320px; height: 320px; object-fit: cover;
   border-radius: 50%; border: 3px solid var(--border); filter: grayscale(20%);
 }
-
-/* ─── ABOUT ─── */
 #about { padding-block: var(--sec-pad); background: var(--white); border-top: 1px solid var(--border); }
 .about-grid { display: grid; grid-template-columns: 1fr 1.5fr; align-items: start; gap: 4rem; }
 .about-cards { display: flex; flex-direction: column; gap: 1rem; }
@@ -243,14 +219,8 @@ ul { list-style: none; }
 .about-card h3 { font-size: .95rem; font-weight: 600; color: var(--black); margin-bottom: .4rem; }
 .about-card p { font-size: .85rem; line-height: 1.5; color: var(--grey); }
 .about-text p { font-size: .95rem; line-height: 1.8; color: var(--grey); margin-bottom: 1rem; }
-
-/* ─── SKILLS ─── */
 #skills { padding-block: var(--sec-pad); background: var(--bg); border-top: 1px solid var(--border); }
-.skills-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-}
+.skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
 .skills-card {
   padding: 2rem; background: var(--white); border: 1px solid var(--border);
   border-radius: var(--r-md); transition: box-shadow var(--t);
@@ -268,8 +238,6 @@ ul { list-style: none; }
   font-size: .72rem; color: var(--grey); background: var(--bg);
   border: 1px solid var(--border); border-radius: 100px; padding: 2px 8px; white-space: nowrap;
 }
-
-/* ─── PROJECTS ─── */
 #projects { padding-block: var(--sec-pad); background: var(--white); border-top: 1px solid var(--border); }
 .projects-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
 .project-card {
@@ -292,9 +260,14 @@ ul { list-style: none; }
   background: var(--white); border: 1px solid var(--border);
   border-radius: var(--r-sm); padding: 3px 10px;
 }
-.project-btns { display: flex; flex-wrap: wrap; gap: .75rem; }
-
-/* ─── CONTACT ─── */
+/* ── PROJECT BUTTONS: centered ── */
+.project-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  justify-content: center;
+  margin-top: auto;
+}
 #contact { padding-block: var(--sec-pad); background: var(--bg); border-top: 1px solid var(--border); }
 .contact-box { display: flex; flex-wrap: wrap; gap: 1.5rem; }
 .contact-item {
@@ -307,119 +280,60 @@ ul { list-style: none; }
 .contact-item i { font-size: 1.2rem; color: var(--dark); }
 .contact-item a { font-size: .9rem; font-weight: 500; color: var(--dark); }
 .contact-item a:hover { color: var(--black); }
-
-/* ─── FOOTER ─── */
 footer { padding: 2.5rem; text-align: center; background: var(--black); border-top: 1px solid #222; }
 .footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem; margin-bottom: 1.25rem; }
 .footer-links a { font-size: .8rem; font-weight: 500; color: var(--grey); transition: color var(--t); }
 .footer-links a:hover { color: var(--white); }
 footer p { font-size: .78rem; color: #555; }
 
-/* ═══════════════════════════════════
-   RESPONSIVE
-═══════════════════════════════════ */
-/* ── 1024px: tablet landscape ── */
 @media (max-width: 1024px) {
   #hero { gap: 3rem; }
   .hero-img img { width: 260px; height: 260px; }
-
-  /* Skills: 2 col, card ketiga center */
   .skills-grid { grid-template-columns: repeat(2, 1fr); }
-  .skills-card:last-child {
-    grid-column: 1 / -1;
-    max-width: calc(50% - .75rem);
-    margin-inline: auto;
-  }
-
-  /* Projects: 2 col */
+  .skills-card:last-child { grid-column: 1 / -1; max-width: calc(50% - .75rem); margin-inline: auto; }
   .projects-grid { grid-template-columns: repeat(2, 1fr); }
 }
-
-/* ── 900px: tablet portrait ── */
 @media (max-width: 900px) {
   .nav-toggle { display: flex; }
   .nav-links  { display: none; }
-
-  /* Hero */
-  #hero {
-    flex-direction: column-reverse;
-    text-align: center;
-    padding-top: calc(var(--nav-h) + 3rem);
-    gap: 2rem;
-  }
+  #hero { flex-direction: column-reverse; text-align: center; padding-top: calc(var(--nav-h) + 3rem); gap: 2rem; }
   .hero-content { max-width: 100%; }
   .hero-desc    { margin-inline: auto; }
   .hero-btns    { justify-content: center; }
   .hero-socials { display: flex; justify-content: center; }
   .hero-img img { width: 200px; height: 200px; }
-
-  /* About: single col, cards side by side */
   .about-grid  { grid-template-columns: 1fr; gap: 2rem; }
   .about-cards { flex-direction: row; }
   .about-card  { flex: 1; }
-
-  /* Skills: 2 col, card ketiga center */
   .skills-grid { grid-template-columns: repeat(2, 1fr); }
-  .skills-card:last-child {
-    grid-column: 1 / -1;
-    max-width: calc(50% - .75rem);
-    margin-inline: auto;
-  }
-
-  /* Projects: 2 col */
+  .skills-card:last-child { grid-column: 1 / -1; max-width: calc(50% - .75rem); margin-inline: auto; }
   .projects-grid { grid-template-columns: repeat(2, 1fr); }
-
-  /* Contact */
   .contact-box { flex-direction: column; }
   .contact-item { width: 100%; }
 }
-
-/* ── 768px: large mobile ── */
 @media (max-width: 768px) {
   #about, #skills, #projects, #contact { padding-block: 4rem; }
-
-  /* About cards stack vertically */
   .about-cards { flex-direction: column; }
   .about-card  { flex: unset; }
-
-  /* Skills: semua 1 col penuh */
   .skills-grid { grid-template-columns: 1fr; }
-  .skills-card:last-child {
-    grid-column: unset;
-    max-width: 100%;
-    margin-inline: 0;
-  }
-
-  /* Projects: 1 col */
+  .skills-card:last-child { grid-column: unset; max-width: 100%; margin-inline: 0; }
   .projects-grid { grid-template-columns: 1fr; }
 }
-
-/* ── 600px: mobile portrait ── */
 @media (max-width: 600px) {
   .navbar    { padding-inline: 1rem; }
   #hero      { padding-inline: 1rem; }
   .hero-name { font-size: 2.2rem; }
-
-  /* About */
   .about-grid { gap: 1.5rem; }
-
-  /* Skills */
   .skills-grid  { grid-template-columns: 1fr; }
   .skills-card  { padding: 1.25rem; }
   .skill-item        { flex-wrap: wrap; gap: .4rem; }
   .skill-item span   { min-width: 0; }
   .skill-item small  { margin-left: auto; }
-
-  /* Projects */
   .projects-grid { grid-template-columns: 1fr; }
   .project-card  { padding: 1.25rem; }
   .project-stack span { font-size: .68rem; }
-
-  /* Contact */
   .contact-box  { flex-direction: column; }
   .contact-item { width: 100%; padding: 1rem 1.25rem; }
-
-  /* Footer */
   .footer-links { gap: 1rem; }
 }
 </style>
@@ -547,6 +461,7 @@ footer p { font-size: .78rem; color: #555; }
     <p class="section-eyebrow">Browse My Recent</p>
     <h2 class="section-title">Projects</h2>
     <div class="projects-grid">
+
       <div class="project-card">
         <div class="project-tag">Machine Learning · Thesis</div>
         <h3>Diabetes Risk Prediction Model</h3>
@@ -558,17 +473,20 @@ footer p { font-size: .78rem; color: #555; }
           <a href="https://github.com/gzxos/diabetes-prediction-ml" target="_blank" class="btn btn-sm">GitHub</a>
         </div>
       </div>
+
       <div class="project-card">
         <div class="project-tag">Data Analysis · Power BI</div>
         <h3>Amazon India Sales Dashboard</h3>
-        <p>Analyzed 128K+ Amazon India sales transactions using Python for EDA and Power BI for an interactive dashboard. Performed data cleaning including null handling, column selection, and datetime conversion. Identified key insights: Set as top revenue category, April as peak month, and Maharashtra as leading state.</p>
+        <p>Analyzed 128K+ Amazon India sales transactions using Excel for data cleaning &amp; EDA and Power BI for an interactive dashboard. Identified key insights: Set as top revenue category, April as peak month, and Maharashtra as leading state by revenue.</p>
         <div class="project-stack">
-          <span>Python</span><span>Pandas</span><span>Seaborn</span><span>Power BI</span>
+          <span>Excel</span><span>Power BI</span><span>DAX</span><span>Power Query</span>
         </div>
         <div class="project-btns">
+          <a href="./amazon_dashboard.html" class="btn btn-sm btn-outline">View Project</a>
           <a href="https://github.com/gzxos/amazon-sales-eda" target="_blank" class="btn btn-sm">GitHub</a>
         </div>
       </div>
+
       <div class="project-card">
         <div class="project-tag">Web Development · Freelance</div>
         <h3>Company Profile Website</h3>
@@ -581,6 +499,7 @@ footer p { font-size: .78rem; color: #555; }
           <a href="https://gzxos.github.io/villa-pikasa-site/" target="_blank" class="btn btn-sm btn-outline">Live Demo</a>
         </div>
       </div>
+
     </div>
   </div>
 </section>
@@ -615,18 +534,14 @@ footer p { font-size: .78rem; color: #555; }
 </footer>
 
 <script>
-  /* ── Navbar scroll tint ── */
   const navbar  = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
     navbar.classList.toggle('scrolled', window.scrollY > 50);
   });
-
-  /* ── Hamburger / overlay logic ── */
   const toggle  = document.getElementById('nav-toggle');
   const overlay = document.getElementById('mobile-overlay');
   const closBtn = document.getElementById('overlay-close');
   let   isOpen  = false;
-
   function openMenu() {
     isOpen = true;
     overlay.classList.add('visible');
@@ -636,7 +551,6 @@ footer p { font-size: .78rem; color: #555; }
     navbar.classList.add('menu-open');
     document.body.style.overflow = 'hidden';
   }
-
   function closeMenu() {
     isOpen = false;
     overlay.classList.remove('open');
@@ -647,18 +561,11 @@ footer p { font-size: .78rem; color: #555; }
       if (!isOpen) overlay.classList.remove('visible');
     }, { once: true });
   }
-
   toggle.addEventListener('click', () => { isOpen ? closeMenu() : openMenu(); });
   closBtn.addEventListener('click', closeMenu);
-
-  /* Close on link tap */
   overlay.querySelectorAll('.overlay-link').forEach(link => {
-    link.addEventListener('click', () => {
-      closeMenu();
-    });
+    link.addEventListener('click', () => { closeMenu(); });
   });
-
-  /* ── Smooth scroll (offset for fixed nav) ── */
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
       e.preventDefault();
@@ -667,8 +574,6 @@ footer p { font-size: .78rem; color: #555; }
       window.scrollTo({ top: target.offsetTop - navbar.offsetHeight, behavior: 'smooth' });
     });
   });
-
-  /* ── Prevent ctrl+scroll zoom ── */
   window.addEventListener('wheel', e => { if (e.ctrlKey) e.preventDefault(); }, { passive: false });
   window.addEventListener('keydown', e => { if (e.ctrlKey && ['+','-','=','0'].includes(e.key)) e.preventDefault(); });
 </script>
