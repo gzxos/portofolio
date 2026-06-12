@@ -239,7 +239,7 @@ ul { list-style: none; }
   border: 1px solid var(--border); border-radius: 100px; padding: 2px 8px; white-space: nowrap;
 }
 #projects { padding-block: var(--sec-pad); background: var(--white); border-top: 1px solid var(--border); }
-.projects-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+.projects-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.5rem; }
 .project-card {
   display: flex; flex-direction: column; gap: 1rem;
   padding: 2rem; background: var(--bg); border: 1px solid var(--border);
@@ -254,19 +254,15 @@ ul { list-style: none; }
 }
 .project-card h3 { font-family: var(--font-display); font-size: 1.25rem; font-weight: 400; line-height: 1.3; color: var(--black); }
 .project-card p { flex: 1; font-size: .875rem; line-height: 1.75; color: var(--grey); }
-.project-stack { display: flex; flex-wrap: wrap; gap: .4rem; }
+.project-stack { display: flex; flex-wrap: wrap; gap: .4rem; justify-content: center; }
 .project-stack span {
   font-size: .72rem; font-weight: 600; color: var(--dark);
   background: var(--white); border: 1px solid var(--border);
   border-radius: var(--r-sm); padding: 3px 10px;
 }
-/* ── PROJECT BUTTONS: centered ── */
 .project-btns {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .75rem;
-  justify-content: center;
-  margin-top: auto;
+  display: flex; flex-wrap: wrap; gap: .75rem;
+  justify-content: center; margin-top: auto;
 }
 #contact { padding-block: var(--sec-pad); background: var(--bg); border-top: 1px solid var(--border); }
 .contact-box { display: flex; flex-wrap: wrap; gap: 1.5rem; }
@@ -291,7 +287,6 @@ footer p { font-size: .78rem; color: #555; }
   .hero-img img { width: 260px; height: 260px; }
   .skills-grid { grid-template-columns: repeat(2, 1fr); }
   .skills-card:last-child { grid-column: 1 / -1; max-width: calc(50% - .75rem); margin-inline: auto; }
-  .projects-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 900px) {
   .nav-toggle { display: flex; }
@@ -307,7 +302,6 @@ footer p { font-size: .78rem; color: #555; }
   .about-card  { flex: 1; }
   .skills-grid { grid-template-columns: repeat(2, 1fr); }
   .skills-card:last-child { grid-column: 1 / -1; max-width: calc(50% - .75rem); margin-inline: auto; }
-  .projects-grid { grid-template-columns: repeat(2, 1fr); }
   .contact-box { flex-direction: column; }
   .contact-item { width: 100%; }
 }
@@ -339,8 +333,6 @@ footer p { font-size: .78rem; color: #555; }
 </style>
 </head>
 <body>
-
-<!-- NAVBAR -->
 <nav class="navbar" id="navbar">
   <div class="nav-logo">Ghifari Zaki</div>
   <ul class="nav-links" id="nav-links-desktop">
@@ -353,8 +345,6 @@ footer p { font-size: .78rem; color: #555; }
     <span></span><span></span><span></span>
   </button>
 </nav>
-
-<!-- FULL-PAGE MOBILE OVERLAY -->
 <div class="mobile-overlay" id="mobile-overlay">
   <button class="overlay-close" id="overlay-close" aria-label="Close menu">&#x2715;</button>
   <nav class="overlay-links">
@@ -364,8 +354,6 @@ footer p { font-size: .78rem; color: #555; }
     <a href="#contact"  class="overlay-link">Contact</a>
   </nav>
 </div>
-
-<!-- HERO -->
 <section id="hero">
   <div class="hero-content">
     <p class="hero-eyebrow">Hello, I'm</p>
@@ -384,8 +372,6 @@ footer p { font-size: .78rem; color: #555; }
     <img src="./assets/profile.png" alt="Ghifari Zaki" />
   </div>
 </section>
-
-<!-- ABOUT -->
 <section id="about">
   <div class="container">
     <p class="section-eyebrow">Get To Know More</p>
@@ -411,8 +397,6 @@ footer p { font-size: .78rem; color: #555; }
     </div>
   </div>
 </section>
-
-<!-- SKILLS -->
 <section id="skills">
   <div class="container">
     <p class="section-eyebrow">What I Work With</p>
@@ -423,7 +407,7 @@ footer p { font-size: .78rem; color: #555; }
         <div class="skill-list">
           <div class="skill-item"><i class="fas fa-check"></i><span>Python (Pandas)</span><small>Experienced</small></div>
           <div class="skill-item"><i class="fas fa-check"></i><span>Microsoft Excel</span><small>Experienced</small></div>
-          <div class="skill-item"><i class="fas fa-check"></i><span>SQL</span><small>Basic</small></div>
+          <div class="skill-item"><i class="fas fa-check"></i><span>SQL</span><small>Intermediate</small></div>
         </div>
       </div>
       <div class="skills-card">
@@ -437,7 +421,7 @@ footer p { font-size: .78rem; color: #555; }
       <div class="skills-card">
         <h3>Tools &amp; Other</h3>
         <div class="skill-list">
-          <div class="skill-item"><i class="fas fa-check"></i><span>Jupyter Notebook</span><small>Intermediate</small></div>
+          <div class="skill-item"><i class="fas fa-check"></i><span>PostgreSQL</span><small>Intermediate</small></div>
           <div class="skill-item"><i class="fas fa-check"></i><span>Git &amp; GitHub</span><small>Intermediate</small></div>
           <div class="skill-item"><i class="fas fa-check"></i><span>VS Code</span><small>Intermediate</small></div>
         </div>
@@ -445,14 +429,11 @@ footer p { font-size: .78rem; color: #555; }
     </div>
   </div>
 </section>
-
-<!-- PROJECTS -->
 <section id="projects">
   <div class="container">
     <p class="section-eyebrow">Browse My Recent</p>
     <h2 class="section-title">Projects</h2>
     <div class="projects-grid">
-
       <div class="project-card">
         <div class="project-tag">Machine Learning · Thesis</div>
         <h3>Diabetes Risk Prediction Model</h3>
@@ -464,7 +445,6 @@ footer p { font-size: .78rem; color: #555; }
           <a href="https://github.com/gzxos/diabetes-prediction-ml" target="_blank" class="btn btn-sm">GitHub</a>
         </div>
       </div>
-
       <div class="project-card">
         <div class="project-tag">Data Analysis · Power BI</div>
         <h3>Brazilian E-Commerce Analytics Dashboard</h3>
@@ -477,7 +457,6 @@ footer p { font-size: .78rem; color: #555; }
           <a href="https://github.com/gzxos/brazilian_e-commerce_analytics" target="_blank" class="btn btn-sm">GitHub</a>
         </div>
       </div>
-
       <div class="project-card">
         <div class="project-tag">Data Analysis · Power BI</div>
         <h3>Amazon India Sales Dashboard</h3>
@@ -490,7 +469,6 @@ footer p { font-size: .78rem; color: #555; }
           <a href="https://github.com/gzxos/amazon-sales-eda" target="_blank" class="btn btn-sm">GitHub</a>
         </div>
       </div>
-
       <div class="project-card">
         <div class="project-tag">Web Development · Freelance</div>
         <h3>Company Profile Website</h3>
@@ -503,12 +481,9 @@ footer p { font-size: .78rem; color: #555; }
           <a href="https://gzxos.github.io/villa-pikasa-site/" target="_blank" class="btn btn-sm btn-outline">Live Demo</a>
         </div>
       </div>
-
     </div>
   </div>
 </section>
-
-<!-- CONTACT -->
 <section id="contact">
   <div class="container">
     <p class="section-eyebrow">Get in Touch</p>
@@ -525,8 +500,6 @@ footer p { font-size: .78rem; color: #555; }
     </div>
   </div>
 </section>
-
-<!-- FOOTER -->
 <footer>
   <div class="footer-links">
     <a href="#about">About</a>
@@ -536,7 +509,6 @@ footer p { font-size: .78rem; color: #555; }
   </div>
   <p>© 2025 Ghifari Zaki. All Rights Reserved.</p>
 </footer>
-
 <script>
   const navbar  = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
