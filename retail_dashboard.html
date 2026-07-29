@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+<title>Live-Commerce Sales & Refund Analytics — Ghifari Zaki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --black:        #0a0a0a;
+  --dark:         #1a1a1a;
+  --dark-2:       #2a2a2a;
+  --grey:         #6b6b6b;
+  --grey-light:   #e8e8e8;
+  --bg:           #f5f5f5;
+  --white:        #ffffff;
+  --border:       #e0e0e0;
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body:    'Inter', sans-serif;
+  --nav-h:        68px;
+  --max-w:        1100px;
+  --sec-pad:      5rem;
+  --r-sm:         6px;
+  --r-md:         12px;
+  --r-lg:         20px;
+  --shadow-sm:    0 1px 4px rgba(0,0,0,.08);
+  --shadow-md:    0 4px 20px rgba(0,0,0,.10);
+  --t:            0.25s ease;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--dark);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; transition: color var(--t); }
+ul { list-style: none; }
+
+.container { width: min(var(--max-w), 100% - 3rem); margin-inline: auto; }
+
+/* ─── NAVBAR ─── */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  display: flex; align-items: center; justify-content: space-between;
+  padding-inline: 2rem;
+  z-index: 1101;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid transparent;
+  transition: background var(--t), border-color var(--t);
+}
+.navbar.scrolled { border-bottom-color: var(--border); background: rgba(245,245,245,.97); }
+.nav-logo { font-family: var(--font-display); font-size: 1.2rem; color: var(--black); letter-spacing: -.01em; }
+.nav-back {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-size: .8rem; font-weight: 500; color: var(--grey);
+  transition: color var(--t);
+}
+.nav-back:hover { color: var(--black); }
+.nav-back i { font-size: .7rem; }
+
+/* ─── HERO ─── */
+.project-hero {
+  padding: calc(var(--nav-h) + 4rem) 0 4rem;
+  opacity: 0;
+  transform: translateY(24px);
+  animation: fadeUp .7s ease forwards .1s;
+}
+.project-tag {
+  display: inline-block;
+  font-size: .68rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--grey);
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 100px; padding: 4px 12px;
+  margin-bottom: 1.25rem;
+}
+.project-hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 5vw, 3.8rem);
+  font-weight: 400; line-height: 1.1;
+  color: var(--black); margin-bottom: 1rem;
+  letter-spacing: -.02em;
+}
+.project-hero .lead {
+  font-size: .95rem; line-height: 1.8;
+  color: var(--grey); max-width: 620px;
+  margin-bottom: 1.75rem;
+}
+.hero-meta {
+  display: flex; flex-wrap: wrap; gap: 1.5rem;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.75rem;
+}
+.meta-item { display: flex; flex-direction: column; gap: .2rem; }
+.meta-label { font-size: .65rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--grey); }
+.meta-value { font-size: .85rem; font-weight: 600; color: var(--dark); }
+.hero-btns { display: flex; flex-wrap: wrap; gap: .75rem; }
+.btn {
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .65rem 1.5rem;
+  border-radius: var(--r-sm); font-family: var(--font-body);
+  font-size: .82rem; font-weight: 600; letter-spacing: .02em;
+  cursor: pointer; border: 1.5px solid transparent;
+  transition: all var(--t);
+  white-space: nowrap;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn-dark { background: var(--black); color: var(--white); border-color: var(--black); }
+.btn-dark:hover { background: var(--dark-2); }
+.btn-outline { background: transparent; color: var(--black); border-color: var(--black); }
+.btn-outline:hover { background: var(--black); color: var(--white); }
+
+/* ─── DASHBOARD PREVIEW ─── */
+.dashboard-preview {
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 3rem 0;
+  opacity: 0;
+  animation: fadeUp .7s ease forwards .25s;
+}
+.preview-label {
+  font-size: .68rem; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--grey); margin-bottom: 1.25rem;
+}
+.dashboard-img-wrap {
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  background: var(--dark);
+  position: relative;
+}
+.dashboard-img-wrap::before {
+  content: '';
+  display: block;
+  background: var(--dark-2);
+  height: 30px;
+  border-bottom: 1px solid #333;
+}
+.dashboard-img-wrap::after {
+  content: '● ● ●';
+  position: absolute;
+  top: 0; left: .75rem;
+  height: 30px;
+  font-size: .55rem; color: #555;
+  letter-spacing: .25em;
+  line-height: 30px;
+}
+.dashboard-img-wrap img {
+  width: 100%; height: auto;
+  display: block;
+}
+
+/* ─── KPI STRIP ─── */
+.kpi-section {
+  padding: var(--sec-pad) 0;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  opacity: 0;
+  animation: fadeUp .7s ease forwards .35s;
+}
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.kpi-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 1.5rem 1.25rem;
+  transition: box-shadow var(--t), transform var(--t);
+}
+.kpi-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.kpi-label { font-size: .65rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--grey); margin-bottom: .4rem; }
+.kpi-value { font-family: var(--font-display); font-size: 1.6rem; color: var(--black); line-height: 1.1; margin-bottom: .3rem; }
+.kpi-note { font-size: .72rem; color: var(--grey); }
+
+/* ─── SECTION COMMON ─── */
+.section-eyebrow { font-size: .7rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--grey); margin-bottom: .4rem; }
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 400; color: var(--black);
+  line-height: 1.2; margin-bottom: 2.5rem;
+}
+
+/* ─── DATA CLEANING ─── */
+.cleaning-section {
+  padding: var(--sec-pad) 0;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  opacity: 0;
+  animation: fadeUp .7s ease forwards .4s;
+}
+.cleaning-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+.cleaning-card {
+  padding: 1.5rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  transition: box-shadow var(--t), transform var(--t);
+}
+.cleaning-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.cleaning-card .tag-row { display: flex; align-items: center; gap: .6rem; margin-bottom: .75rem; }
+.cleaning-card .tag-row i { font-size: 1rem; color: var(--dark-2); }
+.cleaning-card h3 { font-size: .88rem; font-weight: 700; color: var(--black); }
+.cleaning-card p { font-size: .82rem; line-height: 1.7; color: var(--grey); }
+.cleaning-card p + p { margin-top: .5rem; }
+.cleaning-card .before-after {
+  display: flex; align-items: center; gap: .5rem;
+  font-size: .78rem; font-weight: 600; margin-top: .75rem;
+}
+.cleaning-card .before-after .wrong { color: #b03030; text-decoration: line-through; }
+.cleaning-card .before-after .arrow { color: var(--grey); }
+.cleaning-card .before-after .right { color: #2a7a3a; }
+
+/* ─── INSIGHTS ─── */
+.insights-section {
+  padding: var(--sec-pad) 0;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  opacity: 0;
+  animation: fadeUp .7s ease forwards .45s;
+}
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+.insight-card {
+  padding: 1.5rem;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  transition: box-shadow var(--t), transform var(--t);
+}
+.insight-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.insight-icon { font-size: 1.2rem; color: var(--dark-2); margin-bottom: .75rem; }
+.insight-card h3 { font-size: .88rem; font-weight: 700; color: var(--black); margin-bottom: .5rem; line-height: 1.3; }
+.insight-card p { font-size: .82rem; line-height: 1.65; color: var(--grey); }
+
+/* ─── PROCESS ─── */
+.process-section {
+  padding: var(--sec-pad) 0;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  opacity: 0;
+  animation: fadeUp .7s ease forwards .5s;
+}
+.process-steps {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.25rem;
+  margin-top: 2.5rem;
+  position: relative;
+}
+.process-steps::before {
+  content: '';
+  position: absolute;
+  top: 1.75rem; left: calc(10% + 1rem); right: calc(10% + 1rem);
+  height: 1px; background: var(--border);
+  z-index: 0;
+}
+.step {
+  display: flex; flex-direction: column;
+  align-items: center; text-align: center;
+  gap: .75rem; position: relative; z-index: 1;
+}
+.step-num {
+  width: 3.5rem; height: 3.5rem;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 50%; font-family: var(--font-display);
+  font-size: 1.2rem; color: var(--black);
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+.step h3 { font-size: .82rem; font-weight: 700; color: var(--black); }
+.step p { font-size: .75rem; line-height: 1.6; color: var(--grey); }
+
+/* ─── TECH STACK ─── */
+.stack-section {
+  padding: var(--sec-pad) 0;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  opacity: 0;
+  animation: fadeUp .7s ease forwards .55s;
+}
+.stack-pills {
+  display: flex; flex-wrap: wrap; gap: .6rem;
+  margin-top: 1.75rem;
+}
+.stack-pill {
+  display: flex; align-items: center; gap: .4rem;
+  padding: .5rem 1rem;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: .8rem; font-weight: 600; color: var(--dark);
+  transition: all var(--t);
+}
+.stack-pill:hover { background: var(--black); color: var(--white); border-color: var(--black); }
+.stack-pill i { font-size: .75rem; }
+
+/* ─── CTA ─── */
+.cta-section {
+  padding: var(--sec-pad) 0;
+  background: var(--black);
+  text-align: center;
+}
+.cta-section h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  color: var(--white); font-weight: 400;
+  margin-bottom: .75rem;
+}
+.cta-section p { font-size: .88rem; color: #888; line-height: 1.7; max-width: 480px; margin-inline: auto; margin-bottom: 2rem; }
+.cta-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; }
+.btn-white { background: var(--white); color: var(--black); border-color: var(--white); }
+.btn-white:hover { background: var(--grey-light); }
+.btn-ghost { background: transparent; color: var(--white); border-color: #444; }
+.btn-ghost:hover { border-color: var(--white); }
+
+/* ─── FOOTER ─── */
+footer {
+  padding: 1.5rem 2rem;
+  background: var(--black);
+  border-top: 1px solid #1a1a1a;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: .75rem;
+}
+footer p { font-size: .75rem; color: #555; }
+.footer-back { font-size: .75rem; color: #555; display: flex; align-items: center; gap: .4rem; transition: color var(--t); }
+.footer-back:hover { color: var(--white); }
+
+/* ─── ANIMATION ─── */
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+.reveal {
+  opacity: 0; transform: translateY(20px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ═══════════════════
+   RESPONSIVE
+═══════════════════ */
+@media (max-width: 1024px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .insights-grid { grid-template-columns: repeat(2, 1fr); }
+  .process-steps { grid-template-columns: repeat(3, 1fr); }
+  .process-steps::before { display: none; }
+  .cleaning-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  :root { --sec-pad: 3rem; }
+  .project-hero { padding-top: calc(var(--nav-h) + 2.5rem); padding-bottom: 3rem; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .insights-grid { grid-template-columns: 1fr; }
+  .process-steps { grid-template-columns: repeat(2, 1fr); }
+  .hero-meta { gap: 1rem; }
+}
+
+@media (max-width: 600px) {
+  :root { --sec-pad: 2.5rem; }
+  .navbar { padding-inline: 1rem; }
+  .container { width: min(var(--max-w), 100% - 2rem); }
+  .project-hero { padding-top: calc(var(--nav-h) + 2rem); padding-bottom: 2.5rem; }
+  .project-hero h1 { font-size: 1.75rem; margin-bottom: .85rem; }
+  .project-hero .lead { font-size: .88rem; margin-bottom: 1.5rem; }
+  .project-tag { font-size: .62rem; }
+  .hero-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 1.5rem;
+    padding: 1rem 0;
+  }
+  .meta-label { font-size: .6rem; }
+  .meta-value { font-size: .8rem; }
+  .hero-btns { flex-direction: column; }
+  .hero-btns .btn { width: 100%; justify-content: center; }
+  .kpi-grid { grid-template-columns: 1fr 1fr; gap: .75rem; margin-top: 1.5rem; }
+  .kpi-card { padding: 1.1rem 1rem; }
+  .kpi-value { font-size: 1.3rem; }
+  .kpi-label { font-size: .6rem; }
+  .kpi-note { font-size: .68rem; }
+  .section-title { font-size: 1.5rem; margin-bottom: 1.75rem; }
+  .insights-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .insight-card { padding: 1.25rem; }
+  .process-steps { grid-template-columns: 1fr; gap: 1rem; margin-top: 1.75rem; }
+  .step { flex-direction: row; text-align: left; align-items: flex-start; gap: 1rem; }
+  .step-num { width: 2.5rem; height: 2.5rem; font-size: 1rem; flex-shrink: 0; }
+  .step-content { display: flex; flex-direction: column; gap: .3rem; }
+  .step h3 { font-size: .85rem; }
+  .step p { font-size: .78rem; }
+  .stack-pills { gap: .5rem; margin-top: 1.5rem; }
+  .stack-pill { font-size: .75rem; padding: .45rem .9rem; }
+  .cta-section h2 { font-size: 1.4rem; }
+  .cta-section p { font-size: .82rem; }
+  .cta-btns { flex-direction: column; align-items: stretch; padding-inline: 1rem; }
+  .cta-btns .btn { justify-content: center; }
+  footer { flex-direction: column; align-items: flex-start; padding: 1.25rem 1rem; }
+  .cleaning-card { padding: 1.1rem; }
+}
+
+@media (max-width: 380px) {
+  .kpi-grid { grid-template-columns: 1fr; }
+  .hero-meta { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-logo">Ghifari Zaki</div>
+  <a href="./index.html" class="nav-back">
+    <i class="fas fa-arrow-left"></i> Back to Portfolio
+  </a>
+</nav>
+
+<!-- HERO -->
+<div class="project-hero">
+  <div class="container">
+    <div class="project-tag">Freelance Client Project · Power BI · Data Cleaning</div>
+    <h1>Live-Commerce Sales & Refund Analytics Dashboard</h1>
+    <p class="lead">End-to-end Power BI dashboard built for a boutique live-selling retail store, covering messy real-world order data cleaning, refund cost analysis, and product performance tracking to support ongoing sales monitoring.</p>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <span class="meta-label">Dataset</span>
+        <span class="meta-value">300 Orders</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Period</span>
+        <span class="meta-value">Sep 2025 – Jul 2026</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Tools</span>
+        <span class="meta-value">Excel · Power BI</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Domain</span>
+        <span class="meta-value">Live-Commerce · Retail</span>
+      </div>
+    </div>
+    <div class="hero-btns">
+      <a href="https://github.com/gzxos/live-commerce-refund-dashboard" target="_blank" class="btn btn-dark">
+        <i class="fab fa-github"></i> View on GitHub
+      </a>
+      <a href="./assets/Live_Commerce_Sales_Refund_Dashboard.pbix" class="btn btn-outline">
+        <i class="fas fa-download"></i> Download .pbix
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD PREVIEW -->
+<div class="dashboard-preview">
+  <div class="container">
+    <p class="preview-label">Dashboard Preview</p>
+    <div class="dashboard-img-wrap">
+      <img src="./assets/dashboard-preview3.png" alt="Live-Commerce Sales & Refund Dashboard Preview">
+    </div>
+  </div>
+</div>
+
+<!-- KPI STRIP -->
+<div class="kpi-section">
+  <div class="container">
+    <p class="section-eyebrow">Key Metrics</p>
+    <h2 class="section-title">At a Glance</h2>
+    <div class="kpi-grid">
+      <div class="kpi-card reveal">
+        <p class="kpi-label">Total Revenue</p>
+        <p class="kpi-value">$18,955</p>
+        <p class="kpi-note">Across 11 months of orders</p>
+      </div>
+      <div class="kpi-card reveal">
+        <p class="kpi-label">Total Orders</p>
+        <p class="kpi-value">300</p>
+        <p class="kpi-note">Sep 2025 – Jul 2026</p>
+      </div>
+      <div class="kpi-card reveal">
+        <p class="kpi-label">Avg Order Value</p>
+        <p class="kpi-value">$63.18</p>
+        <p class="kpi-note">Revenue per transaction</p>
+      </div>
+      <div class="kpi-card reveal">
+        <p class="kpi-label">Refund Rate</p>
+        <p class="kpi-value">5.67%</p>
+        <p class="kpi-note">17 refunded orders, $474.73 total</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DATA CLEANING CHALLENGES -->
+<div class="cleaning-section">
+  <div class="container">
+    <p class="section-eyebrow">Real Client Data, Real Mess</p>
+    <h2 class="section-title">Data Cleaning Challenges</h2>
+    <div class="cleaning-grid">
+      <div class="cleaning-card reveal">
+        <div class="tag-row"><i class="fas fa-clone"></i><h3>Duplicate Product Names</h3></div>
+        <p>Two nearly-identical product listings were being treated as separate SKUs due to a typo, splitting their sales and quietly distorting the refund rate calculated per product.</p>
+        <div class="before-after">
+          <span class="wrong">Arylic/Glitter</span><span class="arrow">→</span><span class="right">Acrylic&amp;Glitter</span>
+        </div>
+      </div>
+      <div class="cleaning-card reveal">
+        <div class="tag-row"><i class="fas fa-receipt"></i><h3>Non-Product Transaction Lines</h3></div>
+        <p>Over half the raw rows had no product name at all — not missing data, but legitimate shipping charge and refund reversal line items baked into the same order export. Filtered from product-level charts, kept in order-level totals.</p>
+      </div>
+      <div class="cleaning-card reveal">
+        <div class="tag-row"><i class="fas fa-coins"></i><h3>Non-Product Revenue Line</h3></div>
+        <p>A recurring "livestream deposit" line item — variable-amount pre-payments tied to the store's live-selling format — was inflating product-level revenue and unit counts. Identified and excluded at the source.</p>
+      </div>
+      <div class="cleaning-card reveal">
+        <div class="tag-row"><i class="fas fa-calculator"></i><h3>Overstated Units Sold</h3></div>
+        <p>The original units-sold formula summed every line item regardless of refund status, overcounting units from fully refunded orders while correctly keeping partial refunds (where the item was still delivered).</p>
+        <div class="before-after">
+          <span class="wrong">343 units</span><span class="arrow">→</span><span class="right">297 units</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INSIGHTS -->
+<div class="insights-section">
+  <div class="container">
+    <p class="section-eyebrow">What the Data Revealed</p>
+    <h2 class="section-title">Key Insights</h2>
+    <div class="insights-grid">
+      <div class="insight-card reveal">
+        <div class="insight-icon"><i class="fas fa-crown"></i></div>
+        <h3>One Product Drives Over Half of Revenue</h3>
+        <p>The top-selling item alone accounts for roughly half of total net sales, flagging a concentration risk worth monitoring for supply and demand shifts.</p>
+      </div>
+      <div class="insight-card reveal">
+        <div class="insight-icon"><i class="fas fa-balance-scale"></i></div>
+        <h3>Refund Rate ≠ Refund Cost</h3>
+        <p>The product with the highest refund rate (%) accounted for the smallest dollar loss, while the best-selling product — with a low refund rate — represented the largest absolute refund value due to sheer order volume.</p>
+      </div>
+      <div class="insight-card reveal">
+        <div class="insight-icon"><i class="fas fa-chart-line"></i></div>
+        <h3>Sharp, Unexplained January Spike</h3>
+        <p>Revenue jumped roughly 3x above the surrounding months in January 2026. Cross-checked against the discount data to rule out a promo-driven cause, flagging it as an organic spike worth investigating further.</p>
+      </div>
+      <div class="insight-card reveal">
+        <div class="insight-icon"><i class="fas fa-bug"></i></div>
+        <h3>Corrected a Silent Metric Bug</h3>
+        <p>An order status chart was found to be counting line-item rows instead of distinct orders, overstating totals by over 2x. Rebuilt using distinct order counts to match the rest of the dashboard.</p>
+      </div>
+      <div class="insight-card reveal">
+        <div class="insight-icon"><i class="fas fa-search"></i></div>
+        <h3>Drill-Through for Order-Level Audit</h3>
+        <p>Added a drill-through detail page so any product's underlying transactions — order ID, status, quantity, and refund value — can be pulled up directly from the summary chart.</p>
+      </div>
+      <div class="insight-card reveal">
+        <div class="insight-icon"><i class="fas fa-globe-americas"></i></div>
+        <h3>98% Domestic Market</h3>
+        <p>Nearly all orders (295 of 300) shipped within the US, with the rest split across the UK and Canada — confirming the business is currently a domestic-first operation.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROCESS -->
+<div class="process-section">
+  <div class="container">
+    <p class="section-eyebrow">How It Was Built</p>
+    <h2 class="section-title">Analysis Process</h2>
+    <div class="process-steps">
+      <div class="step reveal">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h3>Data Audit</h3>
+          <p>Reviewed raw order export from the client's store, spotting typos, blank rows, and non-product line items before any chart was built.</p>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h3>Data Cleaning</h3>
+          <p>Standardized duplicate product names, excluded non-product transaction lines, and fixed a units-sold formula to correctly handle refunds.</p>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h3>DAX Measures</h3>
+          <p>Built measures for refund rate, refund dollar value, distinct order counts, and average order value, guarding against blank-value chart bugs.</p>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h3>Dashboard Build</h3>
+          <p>Designed KPI cards and charts covering revenue trend, order status, and refund analysis from three angles: rate, dollar value, and by product.</p>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <h3>Drill-Through Detail</h3>
+          <p>Added a second page with a filterable order-level table, letting the client audit any product's transactions directly from the summary view.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TECH STACK -->
+<div class="stack-section">
+  <div class="container">
+    <p class="section-eyebrow">Built With</p>
+    <h2 class="section-title">Tools & Technologies</h2>
+    <div class="stack-pills">
+      <div class="stack-pill"><i class="fas fa-chart-pie"></i> Power BI</div>
+      <div class="stack-pill"><i class="fas fa-code"></i> DAX</div>
+      <div class="stack-pill"><i class="fas fa-filter"></i> Power Query</div>
+      <div class="stack-pill"><i class="fas fa-file-excel"></i> Microsoft Excel</div>
+      <div class="stack-pill"><i class="fas fa-search"></i> Drill-Through Analysis</div>
+      <div class="stack-pill"><i class="fab fa-github"></i> GitHub</div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="container">
+    <h2>Want to explore the full dashboard?</h2>
+    <p>Download the .pbix file and open it in Power BI Desktop to interact with all the filters, drill-throughs, and visuals.</p>
+    <div class="cta-btns">
+      <a href="./assets/Live_Commerce_Sales_Refund_Dashboard.pbix" class="btn btn-white">
+        <i class="fas fa-download"></i> Download .pbix File
+      </a>
+      <a href="https://github.com/gzxos/live-commerce-refund-dashboard" target="_blank" class="btn btn-ghost">
+        <i class="fab fa-github"></i> View GitHub Repo
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 Ghifari Zaki. All Rights Reserved.</p>
+  <a href="./index.html" class="footer-back">
+    <i class="fas fa-arrow-left"></i> Back to Portfolio
+  </a>
+</footer>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+  });
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => { entry.target.classList.add('visible'); }, i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+  window.addEventListener('wheel', e => { if (e.ctrlKey) e.preventDefault(); }, { passive: false });
+</script>
+</body>
+</html>
